@@ -44,35 +44,18 @@ ch.consume(q, function(msg) {
 message2 = msg.content.toString();
 message2 = message2.split('/');
   console.log(message2);
-fs.open(message2[0], 'r', function (status, fd) {
-    if (status) {
-        console.log(status.message);
-        return;
-    }
-    var fileSize = getFilesizeInBytes(message2[0]);
-    var buffer = new Buffer(fileSize);
-    fs.read(fd, buffer, 0, fileSize, 0, function (err, num) {
-
-        var query = "INSERT INTO image SET ?",
-            values = {
-                file_type: 'img',
-                file_size: buffer.length,
-                file: buffer
-            };
-
-var c = new Client({
+	
+	var c = new Client({
   		host: 'localhost',
   		user: 'root',
   		password: 'test',
 		db: 'testMariadbGalera'
 	});
-        	c.query("INSERT INTO texte (En, Fr) VALUES ('"+message1[0]+"','"+message1[1]+"')", function (err, result) {
+fetch(message2[0]).then(function(response){return response.blob()}).then(function(blob){console.log(blob)});
+	c.query("INSERT INTO image (petite, normal,grosse) VALUES ('"+message2[0] +"','"+message2[1] +"','"+message2[2] +"')", function (err, result) {
 if(err)
 console.log(err);
 	});
-
-    });
-});
 }, {noAck: true});
   });
 

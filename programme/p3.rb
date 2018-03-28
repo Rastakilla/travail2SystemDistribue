@@ -13,6 +13,8 @@ begin
     puts " [x] Received #{body}"
     pathe = "#{body}"
 	image = MiniMagick::Image.open(pathe)
+	randomStringOriginal = SecureRandom.hex
+	image.write randomStringOriginal+".png"
 	image.resize "100x100"
 	image.format "png"
 	random_string = SecureRandom.hex
@@ -22,7 +24,7 @@ begin
 	image.format "png"
 	random_string = SecureRandom.hex
 	image.write random_string+".png"
-	nomImage = nomImage+".png"+"/"+random_string+".png"
+	nomImage = nomImage+".png"+"/"+randomStringOriginal+".png/"+random_string+".png"
 	puts nomImage
 	channel = connection.create_channel
 	channel.topic("echangeur_topic_01")
